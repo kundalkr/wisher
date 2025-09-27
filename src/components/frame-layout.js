@@ -1,0 +1,105 @@
+import { Canvas, FabricImage } from "fabric";
+import React, { useEffect, useRef, useState } from "react";
+import birthdayimg from "./birthday/Birthdayconstants";
+import { useParams } from "react-router-dom";
+import "../css/components.css"
+
+const Framelaout = () => {
+    const params = useParams();
+    const { id } = params;
+    const canvasRef = useRef(null);
+    const [Canvase, setCanvase] = useState(null);
+
+    useEffect(() => {
+        birthdayimg.find((frame) => {
+            if (frame.id == parseInt(id)) {
+                const imager = new Image(); imager.src = frame.pictureLink;
+                imager.onload = () => {
+                    const Maincanvas = new Canvas(canvasRef.current, {
+                        width: imager.width,
+                        height: imager.height,
+                        originX: 'left',
+                        originY: 'top',
+                        backgroundImage: new FabricImage(imager),
+                    });
+                    console.log(Maincanvas);
+                    Maincanvas.renderAll();
+                    setCanvase(Maincanvas);
+                    Maincanvas.toDataURL('image/png');
+                }
+                return () => Maincanvas.dispose();
+            }
+        })
+    }, [id]);
+
+    const handleFileChange = (e, pictureId) => {
+        console.log(birthdayimg);
+        const file = e.target.files[0];
+        birthdayimg.find((frame) => {
+            if (frame.id === parseInt(id)) {
+                frame.PictureLocation.find((loca) => {
+                    if (loca.id === pictureId) {
+                        FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
+                            img.set({
+                                top: loca.location.top,
+                                left: loca.location.left,
+                                scaleX: loca.reso.width / img.width,
+                                scaleY: loca.reso.height / img.height,
+                                lockScalingX: true,
+                                lockScalingY: true,
+                                lockSkewingX: true,
+                                lockSkewingY: true,
+                                lockRotation: true,
+                                lockMovementX: true,
+                                lockMovementY: true,
+                            })
+                            if (loca.location.rotate) {
+                                img.rotate(loca.location.rotate);
+                            }
+                            Canvase.renderAll(); Canvase.add(img);
+                        })
+                    }
+                })
+            }
+        })
+    };
+    const handleDownload = () => {
+        if (!Canvase) return;
+
+        const dataURL = Canvase.toDataURL({
+            format: "png",
+            quality: 1,
+            multiplier: 2
+        });
+
+        const link = document.createElement("a");
+        link.href = dataURL;
+        link.download = "edited-canvas.png";
+        link.click();
+    };
+
+    return (
+        <>
+            <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
+            {
+                birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+                    <input
+                        type="file"
+                        key={picture.id}
+                        style={{ marginLeft: "10px" }}
+                        onChange={(e) => handleFileChange(e, picture.id)}
+                    />
+                ))
+            }
+            <button onClick={handleDownload} className="button type1" >
+                <span className="btn-txt">Download</span>
+            </button>
+
+        </>
+    );
+
+};
+
+
+
+export default Framelaout
