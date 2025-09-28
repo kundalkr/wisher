@@ -8,6 +8,7 @@ import happybirthday2 from "url:../../assets/img/birthdayframe/happy-birthday-2.
 import happybirthday3 from "url:../../assets/img/birthdayframe/happy-birthday-3.jpg";
 import happybirthday5 from "url:../../assets/img/birthdayframe/happy-birthday-5.jpg";
 import happybirthday6 from "url:../../assets/img/birthdayframe/happy-birthday-6.jpg";
+import happybirthday7 from "url:../../assets/img/birthdayframe/happy-birthday-7.jpg";
 
 const birthdayimg = [
     {
@@ -200,7 +201,6 @@ const birthdayimg = [
                     left: 119,
                     top: 288,
                     rotate: -15
-
                 },
                 reso: {
                     width: 326,
@@ -365,7 +365,7 @@ const birthdayimg = [
                     height: 190
                 }
             },
-             {
+            {
                 id: 2,
                 location: {
                     left: 93,
@@ -375,15 +375,38 @@ const birthdayimg = [
                     width: 246,
                     height: 246
                 }
-            },     {
+            }, {
                 id: 3,
-              location: {
+                location: {
                     left: 432,
                     top: 598, rotate: 9
                 },
                 reso: {
                     width: 203,
                     height: 203
+                }
+            }
+
+        ],
+    },
+    {
+        pictureLink: happybirthday7,
+        id: 11,
+        category: "normal",
+        Reso: {
+            width: 736,
+            height: 1308
+        },
+        PictureLocation: [
+            {
+                id: 1,
+                location: {
+                    left: 135,
+                    top: 231
+                },
+                reso: {
+                    width: 467,
+                    height: 509
                 }
             }
 

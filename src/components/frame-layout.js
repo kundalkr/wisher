@@ -40,6 +40,7 @@ const Framelaout = () => {
                 frame.PictureLocation.find((loca) => {
                     if (loca.id === pictureId) {
                         FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
+                            img.onSelect((e.)=>{});
                             img.set({
                                 top: loca.location.top,
                                 left: loca.location.left,
@@ -62,7 +63,12 @@ const Framelaout = () => {
                 })
             }
         })
+
+        e.target.style.display = "none";
+  
+        console.log(e);
     };
+
     const handleDownload = () => {
         if (!Canvase) return;
 
@@ -71,7 +77,6 @@ const Framelaout = () => {
             quality: 1,
             multiplier: 2
         });
-
         const link = document.createElement("a");
         link.href = dataURL;
         link.download = "edited-canvas.png";
@@ -86,14 +91,15 @@ const Framelaout = () => {
 
                 {
                     birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
-                       ( <input
+                        (<input
                             type="file"
                             key={picture.id}
                             id={`${picture.id}`}
                             style={{
-                                marginLeft: "10px", display: "none", position: "absolute",
+                                width: `${picture.reso.width}px`, height: `${picture.reso.height}px`,
+                                marginLeft: "100px", position: "absolute",
                                 left: `${picture.location.left}px`,
-                                top: `${picture.location.top}px`, color: "white",border:"10px solid red" , zIndex:"1111111"
+                                top: `${picture.location.top}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
                             }}
                             onChange={(e) => handleFileChange(e, picture.id)}
                         />)
