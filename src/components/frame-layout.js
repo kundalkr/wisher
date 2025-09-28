@@ -79,14 +79,14 @@ const Framelaout = () => {
     };
 
     return (
-        <>
+        <div style={{ marginLeft: "100px", marginRight: "100px" }}>
             <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
             {
                 birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
                     <input
                         type="file"
                         key={picture.id}
-                        style={{ marginLeft: "10px" }}
+                        style={{ marginLeft: "10px",display:"none" }}
                         onChange={(e) => handleFileChange(e, picture.id)}
                     />
                 ))
@@ -95,7 +95,7 @@ const Framelaout = () => {
                 <span className="btn-txt">Download</span>
             </button>
 
-        </>
+        </div>
     );
 
 };
