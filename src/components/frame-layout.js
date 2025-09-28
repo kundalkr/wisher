@@ -80,22 +80,31 @@ const Framelaout = () => {
 
     return (
         <div style={{ marginLeft: "100px", marginRight: "100px" }}>
-            <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
-            {
-                birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
-                    <input
-                        type="file"
-                        key={picture.id}
-                        style={{ marginLeft: "10px",display:"none" }}
-                        onChange={(e) => handleFileChange(e, picture.id)}
-                    />
-                ))
-            }
+
+            <div>
+                <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
+
+                {
+                    birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+                       ( <input
+                            type="file"
+                            key={picture.id}
+                            id={`${picture.id}`}
+                            style={{
+                                marginLeft: "10px", display: "none", position: "absolute",
+                                left: `${picture.location.left}px`,
+                                top: `${picture.location.top}px`, color: "white",border:"10px solid red" , zIndex:"1111111"
+                            }}
+                            onChange={(e) => handleFileChange(e, picture.id)}
+                        />)
+                    ))
+                }
+            </div>
             <button onClick={handleDownload} className="button type1" >
                 <span className="btn-txt">Download</span>
             </button>
 
-        </div>
+        </div >
     );
 
 };
