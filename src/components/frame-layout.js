@@ -3,12 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 import birthdayimg from "./birthday/Birthdayconstants";
 import { useParams } from "react-router-dom";
 import "../css/components.css"
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Framelaout = () => {
     const params = useParams();
     const { id } = params;
     const canvasRef = useRef(null);
     const [Canvase, setCanvase] = useState(null);
+    const [selected, setSelected] = useState(null);
+
     useEffect(() => {
         birthdayimg.find((frame) => {
             if (frame.id == parseInt(id)) {
@@ -20,6 +23,12 @@ const Framelaout = () => {
                         originX: 'left',
                         originY: 'top',
                         backgroundImage: new FabricImage(imager),
+                    });
+                    Maincanvas.on("selection:created", (e) => {
+                        setSelected(e.selected[0]);
+                    });
+                    Maincanvas.on("selection:cleared", () => {
+                        setSelected(null);
                     });
                     console.log(Maincanvas);
                     Maincanvas.renderAll();
@@ -39,6 +48,7 @@ const Framelaout = () => {
                     if (loca.id === pictureId) {
                         FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
                             // img.onSelect((e.)=>{});
+
                             img.set({
                                 top: loca.location.top,
                                 left: loca.location.left,
@@ -101,7 +111,30 @@ const Framelaout = () => {
             <button onClick={handleDownload} className="button type1" >
                 <span className="btn-txt">Download</span>
             </button>
+            {selected && (
+                birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+                    < div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px` }}>
+                        <div className="up">
+                            <button className="card1 btn btn-success">
+                                <i className="bi bi-crop"></i> Crop
+                            </button>
+                            <button className="card2 btn btn-success">
+                                <i className="bi bi-cloud-upload"></i> Change
+                            </button>
+                        </div>
+                        <div className="down">
+                            <button className="card3 btn btn-success">
+                                <i className="bi bi-check-circle"></i>
+                            </button>
+                            <button className="card4 btn btn-success">
+                                <i className="bi bi-check-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                )
+                ))}
         </div >
+
     );
 
 };
