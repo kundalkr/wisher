@@ -9,6 +9,9 @@ import happybirthday3 from "url:../../assets/img/birthdayframe/happy-birthday-3.
 import happybirthday5 from "url:../../assets/img/birthdayframe/happy-birthday-5.jpg";
 import happybirthday6 from "url:../../assets/img/birthdayframe/happy-birthday-6.jpg";
 import happybirthday7 from "url:../../assets/img/birthdayframe/happy-birthday-7.jpg";
+import happybirthday8 from "url:../../assets/img/birthdayframe/happy-birthday-8.jpg";
+import happybirthday9 from "url:../../assets/img/birthdayframe/happy-birthday-9.jpg";
+import happybirthday10 from "url:../../assets/img/birthdayframe/happy-birthday-10.jpg";
 
 const birthdayimg = [
     {
@@ -412,6 +415,85 @@ const birthdayimg = [
 
         ],
     },
+    {
+        pictureLink: happybirthday8,
+        id: 12,
+        category: "normal",
+        Reso: {
+            width: 678,
+            height: 1206
+        },
+        PictureLocation: [
+            {
+                id: 1,
+                location: {
+                    left: 295,
+                    top: 148, rotate: 9
+                },
+                reso: {
+                    width: 330,
+                    height: 330
+                }
+            },
+            {
+                id: 2,
+                location: {
+                    left: 100,
+                    top: 600, rotate: -11
+                },
+                reso: {
+                    width: 345,
+                    height: 350
+                }
+            }
 
+        ],
+    }, 
+    {
+        pictureLink: happybirthday9,
+        id: 13,
+        category: "normal",
+        Reso: {
+            width: 736,
+            height: 1308
+        },
+        PictureLocation: [
+            {
+                id: 1,
+                location: {
+                    left: 134,
+                    top: 418
+                },
+                reso: {
+                    width: 466,
+                    height: 391
+                }
+            }
+
+        ],
+    },
+       {
+        pictureLink: happybirthday10,
+        id: 14,
+        category: "normal",
+        Reso: {
+            width: 736,
+            height: 1308
+        },
+        PictureLocation: [
+            {
+                id: 1,
+                location: {
+                    left: 255,
+                    top: 618
+                },
+                reso: {
+                    width: 416,
+                    height: 406
+                }
+            }
+
+        ],
+    },
 ];
-export default birthdayimg;
+export default birthdayimg; 

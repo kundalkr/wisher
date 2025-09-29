@@ -9,7 +9,6 @@ const Framelaout = () => {
     const { id } = params;
     const canvasRef = useRef(null);
     const [Canvase, setCanvase] = useState(null);
-
     useEffect(() => {
         birthdayimg.find((frame) => {
             if (frame.id == parseInt(id)) {
@@ -31,7 +30,6 @@ const Framelaout = () => {
             }
         })
     }, [id]);
-
     const handleFileChange = (e, pictureId) => {
         console.log(birthdayimg);
         const file = e.target.files[0];
@@ -40,7 +38,7 @@ const Framelaout = () => {
                 frame.PictureLocation.find((loca) => {
                     if (loca.id === pictureId) {
                         FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
-                            img.onSelect((e.)=>{});
+                            // img.onSelect((e.)=>{});
                             img.set({
                                 top: loca.location.top,
                                 left: loca.location.left,
@@ -63,15 +61,11 @@ const Framelaout = () => {
                 })
             }
         })
-
         e.target.style.display = "none";
-  
         console.log(e);
     };
-
     const handleDownload = () => {
         if (!Canvase) return;
-
         const dataURL = Canvase.toDataURL({
             format: "png",
             quality: 1,
@@ -85,10 +79,8 @@ const Framelaout = () => {
 
     return (
         <div style={{ marginLeft: "100px", marginRight: "100px" }}>
-
             <div>
                 <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
-
                 {
                     birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
                         (<input
@@ -99,7 +91,7 @@ const Framelaout = () => {
                                 width: `${picture.reso.width}px`, height: `${picture.reso.height}px`,
                                 marginLeft: "100px", position: "absolute",
                                 left: `${picture.location.left}px`,
-                                top: `${picture.location.top}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
+                                top: `${picture.location.top}px`, color: "white", border: "2px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
                             }}
                             onChange={(e) => handleFileChange(e, picture.id)}
                         />)
@@ -109,7 +101,6 @@ const Framelaout = () => {
             <button onClick={handleDownload} className="button type1" >
                 <span className="btn-txt">Download</span>
             </button>
-
         </div >
     );
 
