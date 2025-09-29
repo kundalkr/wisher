@@ -2,7 +2,8 @@
   "name": "wisher",
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", "cache" : "rm -rf .parcel-cache dist" 
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cache": "rm -rf .parcel-cache dist"
   },
   "author": "",
   "license": "ISC",
@@ -11,6 +12,7 @@
     "parcel": "^2.16.0"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.13.1",
     "fabric": "^6.7.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
