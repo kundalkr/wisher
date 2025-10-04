@@ -153,6 +153,7 @@ const Framelaout = () => {
                 lockMovementX: true,
                 lockMovementY: true,
             })
+            img.rotate(obje.angle);
             Canvase.add(img); Canvase.renderAll();
         })
     };
@@ -181,45 +182,42 @@ const Framelaout = () => {
                 <span className="btn-txt">Download</span>
             </button>
             {selected && (
-                birthdayimg.find((frame) => {
-                    if (frame.id === parseInt(id)) {
-                        frame.PictureLocation.map((picture) =>
-                        (selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ?
-                            (<div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
-                                <div className="up">
-                                    <button className="card1" id="myBtn" onClick={modalOn}>
-                                        <i className="bi bi-crop"></i> Crop
-                                    </button>
-                                    {/* modal */}
-                                    <div id="myModal" className="modal">
-                                        <div className="modal-content">
-                                            <span className="close" onClick={modalClose}>&times;</span>
-                                            <ImageCropper image={Canvase.getActiveObject()} sendData={handleCroppedData} />
-                                        </div>
+                birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+                    selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
+                        <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
+                            <div className="up">
+                                <button className="card1" id="myBtn" onClick={modalOn}>
+                                    <i className="bi bi-crop"></i> Crop
+                                </button>
+                                {/* modal */}
+                                <div id="myModal" className="modal">
+                                    <div className="modal-content">
+                                        <span className="close" onClick={modalClose}>&times;</span>
+                                        <ImageCropper image={Canvase.getActiveObject()} sendData={handleCroppedData} />
                                     </div>
-                                    {/* modal */}
-                                    <button className="card2 btn btn-success" onClick={changePicture}>
-                                        <i className="bi bi-cloud-upload"></i> Change
-                                    </button>
-                                    <input type="file"
-                                        ref={fileInputRef}
-                                        style={{ display: "none" }}
-                                        onChange={(e) => handlenewfile(e, { selected }, { picture })} />
                                 </div>
-                                <div className="down">
-                                    <button className="card3 btn btn-success" onClick={deleteActiveObject}>
-                                        <i className="bi bi-trash3"></i>Delete
-                                    </button>
-                                    <button className="card4 btn btn-success">
-                                        <i className="bi bi-check-circle"></i>
-                                    </button>
-                                </div>
+                                {/* modal */}
+                                <button className="card2 btn btn-success" onClick={changePicture}>
+                                    <i className="bi bi-cloud-upload"></i> Change
+                                </button>
+                                <input type="file"
+                                    ref={fileInputRef}
+                                    style={{ display: "none" }}
+                                    onChange={(e) => handlenewfile(e, { selected }, { picture })} />
                             </div>
-                            ) : (0))
-                        )
-                    }
-                })
-            )}
+                            <div className="down">
+                                <button className="card3 btn btn-success" onClick={deleteActiveObject}>
+                                    <i className="bi bi-trash3"></i>Delete
+                                </button>
+                                <button className="card4 btn btn-success">
+                                    <i className="bi bi-check-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    ) : (0)
+
+                )
+                ))}
         </div >
     );
 };
