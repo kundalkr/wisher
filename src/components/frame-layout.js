@@ -14,6 +14,8 @@ const Framelaout = () => {
     const fileInputRef = useRef(null);
     const [Canvase, setCanvase] = useState(null);
     const [selected, setSelected] = useState(null);
+    const [pic, setpic] = useState(null);
+
     useEffect(() => {
         birthdayimg.find((frame) => {
             if (frame.id == parseInt(id)) {
@@ -29,6 +31,7 @@ const Framelaout = () => {
                     Maincanvas.on("selection:created", (e) => {
                         setSelected(e.selected[0]);
                     });
+
                     Maincanvas.on("selection:cleared", () => {
                         setSelected(null);
                     });
@@ -127,8 +130,9 @@ const Framelaout = () => {
         })
     }
 
-    function modalOn() {
+    function modalOn({picture}) {
         document.getElementById("myModal").style.display = "block";
+      setpic(picture);
     }
     function modalClose() {
         document.getElementById("myModal").style.display = "none";
@@ -141,10 +145,10 @@ const Framelaout = () => {
         }
         FabricImage.fromURL(value).then((img) => {
             img.set({
-                top: obje.top,
-                left: obje.left,
-                scaleX: obje.scaleX,
-                scaleY: obje.scaleY,
+                top: pic.location.top,
+                left: pic.location.left,
+                scaleX: pic.reso.width / img.width,
+                scaleY: pic.reso.height / img.height,
                 lockScalingX: true,
                 lockScalingY: true,
                 lockSkewingX: true,
@@ -186,9 +190,6 @@ const Framelaout = () => {
                     selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
                         <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
                             <div className="up">
-                                <button className="card1" id="myBtn" onClick={modalOn}>
-                                    <i className="bi bi-crop"></i> Crop
-                                </button>
                                 {/* modal */}
                                 <div id="myModal" className="modal">
                                     <div className="modal-content">
@@ -197,6 +198,10 @@ const Framelaout = () => {
                                     </div>
                                 </div>
                                 {/* modal */}
+                                <button className="card1" id="myBtn" onClick={() => modalOn({picture})}>
+                                    <i className="bi bi-crop"></i> Crop
+                                </button>
+
                                 <button className="card2 btn btn-success" onClick={changePicture}>
                                     <i className="bi bi-cloud-upload"></i> Change
                                 </button>
@@ -215,13 +220,9 @@ const Framelaout = () => {
                             </div>
                         </div>
                     ) : (0)
-
                 )
                 ))}
         </div >
     );
 };
-
-
-
 export default Framelaout

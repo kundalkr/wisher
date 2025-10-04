@@ -12,7 +12,7 @@ import happybirthday7 from "url:../../assets/img/birthdayframe/happy-birthday-7.
 import happybirthday8 from "url:../../assets/img/birthdayframe/happy-birthday-8.jpg";
 import happybirthday9 from "url:../../assets/img/birthdayframe/happy-birthday-9.jpg";
 import happybirthday10 from "url:../../assets/img/birthdayframe/happy-birthday-10.jpg";
-import { left } from "@popperjs/core";
+// import { left } from "@popperjs/core";
 
 const birthdayimg = [
     {
