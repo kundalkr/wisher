@@ -4,6 +4,8 @@ import birthdayimg from "./birthday/Birthdayconstants";
 import { useParams } from "react-router-dom";
 import "../css/components.css"
 import "bootstrap-icons/font/bootstrap-icons.css";
+import ImageCropper from "./utils-component/imgCropper";
+import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
 
 const Framelaout = () => {
     const params = useParams();
@@ -12,6 +14,7 @@ const Framelaout = () => {
     const fileInputRef = useRef(null);
     const [Canvase, setCanvase] = useState(null);
     const [selected, setSelected] = useState(null);
+    const [pic, setpic] = useState(null);
 
     useEffect(() => {
         birthdayimg.find((frame) => {
@@ -28,10 +31,11 @@ const Framelaout = () => {
                     Maincanvas.on("selection:created", (e) => {
                         setSelected(e.selected[0]);
                     });
+
                     Maincanvas.on("selection:cleared", () => {
                         setSelected(null);
                     });
-                    console.log(Maincanvas);
+                    // console.log(Maincanvas);
                     Maincanvas.renderAll();
                     setCanvase(Maincanvas);
                     Maincanvas.toDataURL('image/png');
@@ -45,8 +49,8 @@ const Framelaout = () => {
             }
         })
     }, [id]);
+
     const handleFileChange = (e, pictureId) => {
-        console.log(birthdayimg);
         const file = e.target.files[0];
         birthdayimg.find((frame) => {
             if (frame.id === parseInt(id)) {
@@ -76,8 +80,9 @@ const Framelaout = () => {
                 })
             }
         })
+
         e.target.style.display = "none";
-        console.log(e);
+        // console.log(e);
     };
     const handleDownload = () => {
         if (!Canvase) return;
@@ -97,6 +102,7 @@ const Framelaout = () => {
         if (activeObj) {
             Canvase.remove(activeObj);
         }
+
     }
     function changePicture() {
         fileInputRef.current.click();
@@ -124,6 +130,38 @@ const Framelaout = () => {
             Canvase.add(img); Canvase.renderAll();
         })
     }
+
+    function modalOn({picture}) {
+        document.getElementById("myModal").style.display = "block";
+      setpic(picture);
+    }
+    function modalClose() {
+        document.getElementById("myModal").style.display = "none";
+    }
+    const handleCroppedData = (value) => {
+        const obje = Canvase.getActiveObject();
+        console.log(obje);
+        if (obje) {
+            Canvase.remove(obje);
+        }
+        FabricImage.fromURL(value).then((img) => {
+            img.set({
+                top: pic.location.top,
+                left: pic.location.left,
+                scaleX: pic.reso.width / img.width,
+                scaleY: pic.reso.height / img.height,
+                lockScalingX: true,
+                lockScalingY: true,
+                lockSkewingX: true,
+                lockSkewingY: true,
+                lockRotation: true,
+                lockMovementX: true,
+                lockMovementY: true,
+            })
+            img.rotate(obje.angle);
+            Canvase.add(img); Canvase.renderAll();
+        })
+    };
     return (
         <div style={{ marginLeft: "100px", marginRight: "100px" }}>
             <div>
@@ -138,7 +176,7 @@ const Framelaout = () => {
                                 width: `${picture.reso.width}px`, height: `${picture.reso.height}px`,
                                 marginLeft: "100px", position: "absolute",
                                 left: `${picture.location.left}px`,
-                                top: `${picture.location.top}px`, color: "white", border: "2px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
+                                top: `${picture.location.top}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
                             }}
                             onChange={(e) => handleFileChange(e, picture.id)}
                         />)
@@ -150,12 +188,21 @@ const Framelaout = () => {
             </button>
             {selected && (
                 birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
-                    (selected.top === picture.location.top && selected.left === picture.location.left) ? (
-                        < div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px` }}>
+                    selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
+                        <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
                             <div className="up">
-                                <button className="card1 btn btn-success" >
+                                {/* modal */}
+                                <div id="myModal" className="modal">
+                                    <div className="modal-content">
+                                        <span className="close" onClick={modalClose}>&times;</span>
+                                        <ImageCropper image={Canvase.getActiveObject()} sendData={handleCroppedData} />
+                                    </div>
+                                </div>
+                                {/* modal */}
+                                <button className="card1" id="myBtn" onClick={() => modalOn({picture})}>
                                     <i className="bi bi-crop"></i> Crop
                                 </button>
+
                                 <button className="card2 btn btn-success" onClick={changePicture}>
                                     <i className="bi bi-cloud-upload"></i> Change
                                 </button>
@@ -166,7 +213,7 @@ const Framelaout = () => {
                             </div>
                             <div className="down">
                                 <button className="card3 btn btn-success" onClick={deleteActiveObject}>
-                                    <i className="bi bi-trash3"></i>Delete{selected.top}
+                                    <i className="bi bi-trash3"></i>Delete
                                 </button>
                                 <button className="card4 btn btn-success">
                                     <i className="bi bi-check-circle"></i>

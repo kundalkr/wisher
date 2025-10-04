@@ -12,6 +12,7 @@ import happybirthday7 from "url:../../assets/img/birthdayframe/happy-birthday-7.
 import happybirthday8 from "url:../../assets/img/birthdayframe/happy-birthday-8.jpg";
 import happybirthday9 from "url:../../assets/img/birthdayframe/happy-birthday-9.jpg";
 import happybirthday10 from "url:../../assets/img/birthdayframe/happy-birthday-10.jpg";
+// import { left } from "@popperjs/core";
 
 const birthdayimg = [
     {
@@ -203,7 +204,11 @@ const birthdayimg = [
                 location: {
                     left: 119,
                     top: 288,
-                    rotate: -15
+                    rotate: -15,
+                    input: {
+                        left: 82,
+                        top: 335
+                    }
                 },
                 reso: {
                     width: 326,
@@ -328,7 +333,11 @@ const birthdayimg = [
                 id: 1,
                 location: {
                     left: 402,
-                    top: 455, rotate: -6
+                    top: 455, rotate: -6,
+                    input: {
+                        left: 390,
+                        top: 468
+                    }
                 },
                 reso: {
                     width: 240,
@@ -338,7 +347,10 @@ const birthdayimg = [
                 id: 2,
                 location: {
                     left: 101,
-                    top: 628, rotate: -22
+                    top: 628, rotate: -22, input: {
+                        left: 62,
+                        top: 689
+                    }
                 },
                 reso: {
                     width: 280,
@@ -361,7 +373,10 @@ const birthdayimg = [
                 id: 1,
                 location: {
                     left: 358,
-                    top: 265, rotate: 9
+                    top: 265, rotate: 9, input: {
+                        left: 374,
+                        top: 251
+                    }
                 },
                 reso: {
                     width: 190,
@@ -372,7 +387,10 @@ const birthdayimg = [
                 id: 2,
                 location: {
                     left: 93,
-                    top: 435, rotate: -15
+                    top: 435, rotate: -15, input: {
+                        left: 65,
+                        top: 471
+                    }
                 },
                 reso: {
                     width: 246,
@@ -382,7 +400,10 @@ const birthdayimg = [
                 id: 3,
                 location: {
                     left: 432,
-                    top: 598, rotate: 9
+                    top: 598, rotate: 9,     input:{
+              left : 449,
+              top : 583
+             }
                 },
                 reso: {
                     width: 203,
@@ -428,7 +449,10 @@ const birthdayimg = [
                 id: 1,
                 location: {
                     left: 295,
-                    top: 148, rotate: 9
+                    top: 148, rotate: 9,  input:{
+              left : 322,
+              top : 124
+             }
                 },
                 reso: {
                     width: 330,
@@ -439,7 +463,10 @@ const birthdayimg = [
                 id: 2,
                 location: {
                     left: 100,
-                    top: 600, rotate: -11
+                    top: 600, rotate: -11, input:{
+              left : 69,
+              top : 636
+             }
                 },
                 reso: {
                     width: 345,
@@ -448,7 +475,7 @@ const birthdayimg = [
             }
 
         ],
-    }, 
+    },
     {
         pictureLink: happybirthday9,
         id: 13,
@@ -472,7 +499,7 @@ const birthdayimg = [
 
         ],
     },
-       {
+    {
         pictureLink: happybirthday10,
         id: 14,
         category: "normal",
