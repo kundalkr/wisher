@@ -78,7 +78,7 @@ const Framelaout = () => {
         })
 
         e.target.style.display = "none";
-        console.log(e);
+        // console.log(e);
     };
     const handleDownload = () => {
         if (!Canvase) return;
@@ -185,8 +185,8 @@ const Framelaout = () => {
                 birthdayimg.find((frame) => {
                     if (frame.id === parseInt(id)) {
                         frame.PictureLocation.find((picture) =>
-                        (selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate?picture.location.input.top:picture.location.top)) ?
-                            (<div className="main" key={picture.id} style={{position: "absolute", top:`${picture.location.top}px`, left:`${picture.location.left}px`}}>
+                        (selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ?
+                            (<div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`,zIndex:1111111 }}>
                                 <div className="up">
                                     <button className="card1" id="myBtn" onClick={modalOn}>
                                         <i className="bi bi-crop"></i> Crop
@@ -209,7 +209,8 @@ const Framelaout = () => {
                                 </div>
                                 <div className="down">
                                     <button className="card3 btn btn-success" onClick={deleteActiveObject}>
-                                        <i className="bi bi-trash3"></i>Delete{console.log(selected)}
+                                        <i className="bi bi-trash3"></i>Delete
+                                        {/* {console.log(selected)} */}
                                     </button>
                                     <button className="card4 btn btn-success">
                                         <i className="bi bi-check-circle"></i>
