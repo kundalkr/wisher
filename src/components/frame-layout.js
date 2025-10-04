@@ -123,7 +123,6 @@ const Framelaout = () => {
             if (picture.location.rotate) {
                 img.rotate(picture.location.rotate);
             }
-
             Canvase.add(img); Canvase.renderAll();
         })
     }
@@ -184,7 +183,7 @@ const Framelaout = () => {
             {selected && (
                 birthdayimg.find((frame) => {
                     if (frame.id === parseInt(id)) {
-                        frame.PictureLocation.find((picture) =>
+                        frame.PictureLocation.map((picture) =>
                         (selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ?
                             (<div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
                                 <div className="up">
