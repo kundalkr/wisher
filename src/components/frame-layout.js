@@ -34,7 +34,7 @@ const Framelaout = () => {
                     console.log(Maincanvas);
                     Maincanvas.renderAll();
                     setCanvase(Maincanvas);
-                    Maincanvas.toDataURL('image/png');  
+                    Maincanvas.toDataURL('image/png');
                     const activeObj = Maincanvas.getActiveObject();
                     if (activeObj) {
                         console.log(activeObj);
@@ -97,7 +97,6 @@ const Framelaout = () => {
         if (activeObj) {
             Canvase.remove(activeObj);
         }
-
     }
     function changePicture() {
         fileInputRef.current.click();
@@ -122,7 +121,6 @@ const Framelaout = () => {
             if (picture.location.rotate) {
                 img.rotate(picture.location.rotate);
             }
-
             Canvase.add(img); Canvase.renderAll();
         })
     }
@@ -176,16 +174,10 @@ const Framelaout = () => {
                             </div>
                         </div>
                     ) : (0)
-
                 )
                 ))}
             {console.log(selected)}
         </div >
-
     );
-
 };
-
-
-
 export default Framelaout
