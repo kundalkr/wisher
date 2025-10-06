@@ -16,9 +16,10 @@ const Framelaout = () => {
     const [selected, setSelected] = useState(null);
     const [pic, setpic] = useState(null);
 
+    const frame = birthdayimg.find(frame => frame.id === parseInt(id));
+
     useEffect(() => {
-        birthdayimg.find((frame) => {
-            if (frame.id == parseInt(id)) {
+    
                 const imager = new Image(); imager.src = frame.pictureLink;
                 imager.onload = () => {
                     const Maincanvas = new Canvas(canvasRef.current, {
@@ -27,6 +28,7 @@ const Framelaout = () => {
                         originX: 'left',
                         originY: 'top',
                         backgroundImage: new FabricImage(imager),
+                        selection:false,allowTouchScrolling:true
                     });
                     Maincanvas.on("selection:created", (e) => {
                         setSelected(e.selected[0]);
@@ -46,14 +48,11 @@ const Framelaout = () => {
                     }
                 }
                 return () => Maincanvas.dispose();
-            }
-        })
+
     }, [id]);
 
     const handleFileChange = (e, pictureId) => {
         const file = e.target.files[0];
-        birthdayimg.find((frame) => {
-            if (frame.id === parseInt(id)) {
                 frame.PictureLocation.find((loca) => {
                     if (loca.id === pictureId) {
                         FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
@@ -78,9 +77,6 @@ const Framelaout = () => {
                         })
                     }
                 })
-            }
-        })
-
         e.target.style.display = "none";
         // console.log(e);
     };
@@ -167,7 +163,7 @@ const Framelaout = () => {
             <div>
                 <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
                 {
-                    birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+                    frame.PictureLocation.map((picture) => (
                         (<input
                             type="file"
                             key={picture.id}
@@ -187,7 +183,7 @@ const Framelaout = () => {
                 <span className="btn-txt">Download</span>
             </button>
             {selected && (
-                birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+              frame.PictureLocation.map((picture) => (
                     selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
                         <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
                             <div className="up">
