@@ -12,11 +12,13 @@ import happybirthday7 from "url:../../assets/img/birthdayframe/happy-birthday-7.
 import happybirthday8 from "url:../../assets/img/birthdayframe/happy-birthday-8.jpg";
 import happybirthday9 from "url:../../assets/img/birthdayframe/happy-birthday-9.jpg";
 import happybirthday10 from "url:../../assets/img/birthdayframe/happy-birthday-10.jpg";
+import testas from "url:../../assets/img/test/hikeimages.jpg";
 // import { left } from "@popperjs/core";
 
 const birthdayimg = [
     {
         pictureLink: birthdayFrame1,
+        testimages:testas,
         id: 1,
         category: "normal",
         Reso: {

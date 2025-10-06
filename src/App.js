@@ -6,10 +6,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "../node_modules/react-cropper/node_modules/cropperjs/dist/cropper.css"
 import Error from "./components/Error";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import ResponsiveCanvas from "../src/components/test"
 
 const Applayout = () => {
   return (<>
-    <Birthdayframe />
+  <ResponsiveCanvas/>
+    {/* <Birthdayframe /> */}
   </>)
 };
 

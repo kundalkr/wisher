@@ -28,6 +28,7 @@ const Framelaout = () => {
                         originY: 'top',
                         backgroundImage: new FabricImage(imager),
                     });
+                    
                     Maincanvas.on("selection:created", (e) => {
                         setSelected(e.selected[0]);
                     });
@@ -35,7 +36,7 @@ const Framelaout = () => {
                     Maincanvas.on("selection:cleared", () => {
                         setSelected(null);
                     });
-                    // console.log(Maincanvas);
+
                     Maincanvas.renderAll();
                     setCanvase(Maincanvas);
                     Maincanvas.toDataURL('image/png');
@@ -80,7 +81,6 @@ const Framelaout = () => {
                 })
             }
         })
-
         e.target.style.display = "none";
         // console.log(e);
     };
@@ -102,7 +102,6 @@ const Framelaout = () => {
         if (activeObj) {
             Canvase.remove(activeObj);
         }
-
     }
     function changePicture() {
         fileInputRef.current.click();
@@ -130,7 +129,6 @@ const Framelaout = () => {
             Canvase.add(img); Canvase.renderAll();
         })
     }
-
     function modalOn({picture}) {
         document.getElementById("myModal").style.display = "block";
       setpic(picture);
