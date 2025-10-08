@@ -14,71 +14,66 @@ const Framelaout = () => {
     const fileInputRef = useRef(null);
     const [Canvase, setCanvase] = useState(null);
     const [selected, setSelected] = useState(null);
-    const [pic, setpic] = useState(null);
-
+    const [pic, setPicture] = useState(null);
+    const [showCropper, setShowCropper] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
     const frame = birthdayimg.find(frame => frame.id === parseInt(id));
 
     useEffect(() => {
-    
-                const imager = new Image(); imager.src = frame.pictureLink;
-                imager.onload = () => {
-                    const Maincanvas = new Canvas(canvasRef.current, {
-                        width: imager.width,
-                        height: imager.height,
-                        originX: 'left',
-                        originY: 'top',
-                        backgroundImage: new FabricImage(imager),
-                        selection:false,allowTouchScrolling:true
-                    });
-                    Maincanvas.on("selection:created", (e) => {
-                        setSelected(e.selected[0]);
-                    });
+        const imager = new Image(); imager.src = frame.pictureLink;
+        imager.onload = () => {
+            const Maincanvas = new Canvas(canvasRef.current, {
+                width: imager.width,
+                height: imager.height,
+                originX: 'left',
+                originY: 'top',
+                backgroundImage: new FabricImage(imager),
+                selection: false, allowTouchScrolling: true
+            });
+            Maincanvas.on("selection:created", (e) => {
+                setSelected(e.selected[0]);
+            });
 
-                    Maincanvas.on("selection:cleared", () => {
-                        setSelected(null);
-                    });
-                    // console.log(Maincanvas);
-                    Maincanvas.renderAll();
-                    setCanvase(Maincanvas);
-                    Maincanvas.toDataURL('image/png');
-                    const activeObj = Maincanvas.getActiveObject();
-                    if (activeObj) {
-                        console.log(activeObj);
-                        console.log("isoajdooajj  eie qieqw");
-                    }
-                }
-                return () => Maincanvas.dispose();
+            Maincanvas.on("selection:cleared", () => {
+                setSelected(null);
+            });
+
+            Maincanvas.renderAll();
+            setCanvase(Maincanvas);
+            Maincanvas.toDataURL('image/png');
+            return () => Maincanvas.dispose();
+        }
+
 
     }, [id]);
-
+  
     const handleFileChange = (e, pictureId) => {
         const file = e.target.files[0];
-                frame.PictureLocation.find((loca) => {
-                    if (loca.id === pictureId) {
-                        FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
-                            // img.onSelect((e.)=>{});
-                            img.set({
-                                top: loca.location.top,
-                                left: loca.location.left,
-                                scaleX: loca.reso.width / img.width,
-                                scaleY: loca.reso.height / img.height,
-                                lockScalingX: true,
-                                lockScalingY: true,
-                                lockSkewingX: true,
-                                lockSkewingY: true,
-                                lockRotation: true,
-                                lockMovementX: true,
-                                lockMovementY: true,
-                            })
-                            if (loca.location.rotate) {
-                                img.rotate(loca.location.rotate);
-                            }
-                            Canvase.renderAll(); Canvase.add(img);
-                        })
+        frame.PictureLocation.find((loca) => {
+            if (loca.id === pictureId) {
+                FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
+                    // img.onSelect((e.)=>{});
+                    img.set({
+                        top: loca.location.top,
+                        left: loca.location.left,
+                        scaleX: loca.reso.width / img.width,
+                        scaleY: loca.reso.height / img.height,
+                        lockScalingX: true,
+                        lockScalingY: true,
+                        lockSkewingX: true,
+                        lockSkewingY: true,
+                        lockRotation: true,
+                        lockMovementX: true,
+                        lockMovementY: true,
+                    })
+                    if (loca.location.rotate) {
+                        img.rotate(loca.location.rotate);
                     }
+                    Canvase.renderAll(); Canvase.add(img);
                 })
+            }
+        })
         e.target.style.display = "none";
-        // console.log(e);
     };
     const handleDownload = () => {
         if (!Canvase) return;
@@ -98,7 +93,6 @@ const Framelaout = () => {
         if (activeObj) {
             Canvase.remove(activeObj);
         }
-
     }
     function changePicture() {
         fileInputRef.current.click();
@@ -126,15 +120,14 @@ const Framelaout = () => {
             Canvase.add(img); Canvase.renderAll();
         })
     }
+    const handleCropClick = () => {
+        const activeObject = Canvase.getActiveObject();
+        setSelectedImage(activeObject);
+        setShowCropper(true);
+    };
 
-    function modalOn({picture}) {
-        document.getElementById("myModal").style.display = "block";
-      setpic(picture);
-    }
-    function modalClose() {
-        document.getElementById("myModal").style.display = "none";
-    }
     const handleCroppedData = (value) => {
+        setShowCropper(false);
         const obje = Canvase.getActiveObject();
         console.log(obje);
         if (obje) {
@@ -157,7 +150,13 @@ const Framelaout = () => {
             img.rotate(obje.angle);
             Canvase.add(img); Canvase.renderAll();
         })
+
     };
+        frame.PictureLocation.map((picture) => {
+                    if (selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top))) {
+                        setPicture(picture)
+                    }
+                })
     return (
         <div style={{ marginLeft: "100px", marginRight: "100px" }}>
             <div>
@@ -183,22 +182,21 @@ const Framelaout = () => {
                 <span className="btn-txt">Download</span>
             </button>
             {selected && (
-              frame.PictureLocation.map((picture) => (
+                frame.PictureLocation.map((picture) => (
                     selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
                         <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
                             <div className="up">
-                                {/* modal */}
-                                <div id="myModal" className="modal">
-                                    <div className="modal-content">
-                                        <span className="close" onClick={modalClose}>&times;</span>
-                                        <ImageCropper image={Canvase.getActiveObject()} sendData={handleCroppedData} />
-                                    </div>
-                                </div>
-                                {/* modal */}
-                                <button className="card1" id="myBtn" onClick={() => modalOn({picture})}>
+                                <button className="card1" id="myBtn" onClick={handleCropClick}>
                                     <i className="bi bi-crop"></i> Crop
+
                                 </button>
 
+                                {showCropper && (
+                                    <ImageCropper
+                                        image={selectedImage}
+                                        sendData={handleCroppedData}
+                                    />
+                                )}
                                 <button className="card2 btn btn-success" onClick={changePicture}>
                                     <i className="bi bi-cloud-upload"></i> Change
                                 </button>
