@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react"
 import Cropper from "react-cropper"
 import "../../../node_modules/react-cropper/node_modules/cropperjs/dist/cropper.css"
 import "./css/cropper.css"
+
 const ImageCropper = (props) => {
   console.log(props);
   const cropperRef = useRef(null);
   const [image, setImage] = useState(props.image._originalElement.src);
   const [cropped, setCropped] = useState(null);
   const [CroppedButton, getCroppedButton] = useState(false);
-
 
   const onCrop = () => {
     if (cropperRef.current && cropperRef.current.cropper) {
@@ -19,20 +19,22 @@ const ImageCropper = (props) => {
   const handleCropDownload = () => {
     const link = document.createElement("a");
     link.href = cropped;
-    link.download = "edited-canvas.png";
+    link.download = "edited-canvas.jpeg";
     link.click();
   };
+
   function modalClose() {
     document.getElementById("myModal").style.display = "none";
+    props.sendData(3456);
   }
   return (
     <>
       {/* modal */}
       <div id="myModal" className="modal">
         <div className="modal-content">
-          <span className="close" onClick={modalClose} style={{ border: "2px solid black", padding: "4px" }}>&times;</span>
+          <span className="close" onClick={modalClose} style={{ border: "2px solid black", padding: "3px" }}>&times;</span>
           <div id="cropper-div">
-            <div style={{ width: "50%", height: "100%", border: "5px solid blue", }}>
+            <div style={{ width: "50%", height: "100%", border: "5px solid blue"}}>
               <Cropper id="Cropper"
                 ref={cropperRef}
                 minContainerHeight={100}

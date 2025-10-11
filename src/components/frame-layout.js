@@ -2,10 +2,11 @@ import { Canvas, FabricImage } from "fabric";
 import React, { useEffect, useRef, useState } from "react";
 import birthdayimg from "./birthday/Birthdayconstants";
 import { useParams } from "react-router-dom";
-import "../css/components.css"
+import "../css/components.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ImageCropper from "./utils-component/imgCropper";
-import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
+import Imgcompressor from "./utils-component/imgCompressor.js";
 
 const Framelaout = () => {
     const params = useParams();
@@ -33,46 +34,45 @@ const Framelaout = () => {
             Maincanvas.on("selection:created", (e) => {
                 setSelected(e.selected[0]);
             });
-
             Maincanvas.on("selection:cleared", () => {
                 setSelected(null);
             });
-
             Maincanvas.renderAll();
             setCanvase(Maincanvas);
             Maincanvas.toDataURL('image/png');
             return () => Maincanvas.dispose();
         }
-
-
     }, [id]);
-  
+
     const handleFileChange = (e, pictureId) => {
         const file = e.target.files[0];
-        frame.PictureLocation.find((loca) => {
-            if (loca.id === pictureId) {
-                FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
-                    // img.onSelect((e.)=>{});
-                    img.set({
-                        top: loca.location.top,
-                        left: loca.location.left,
-                        scaleX: loca.reso.width / img.width,
-                        scaleY: loca.reso.height / img.height,
-                        lockScalingX: true,
-                        lockScalingY: true,
-                        lockSkewingX: true,
-                        lockSkewingY: true,
-                        lockRotation: true,
-                        lockMovementX: true,
-                        lockMovementY: true,
-                    })
-                    if (loca.location.rotate) {
-                        img.rotate(loca.location.rotate);
+        Imgcompressor(file)
+            .then((url) => {
+                frame.PictureLocation.find((loca) => {
+                    if (loca.id === pictureId) {
+                        FabricImage.fromURL(url).then((img) => {
+                            img.set({
+                                top: loca.location.top,
+                                left: loca.location.left,
+                                scaleX: loca.reso.width / img.width,
+                                scaleY: loca.reso.height / img.height,
+                                lockScalingX: true,
+                                lockScalingY: true,
+                                lockSkewingX: true,
+                                lockSkewingY: true,
+                                lockRotation: true,
+                                lockMovementX: true,
+                                lockMovementY: true,
+                            })
+                            if (loca.location.rotate) {
+                                img.rotate(loca.location.rotate);
+                            }
+                            Canvase.renderAll(); Canvase.add(img);
+                        })
                     }
-                    Canvase.renderAll(); Canvase.add(img);
                 })
-            }
-        })
+            })
+            .catch((err) => console.error("Compression failed:", err));
         e.target.style.display = "none";
     };
     const handleDownload = () => {
@@ -97,66 +97,71 @@ const Framelaout = () => {
     function changePicture() {
         fileInputRef.current.click();
     }
+    
     function handlenewfile(e, { selected }, { picture }) {
         deleteActiveObject();
         const file = e.target.files[0];
-        FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
-            img.set({
-                top: selected.top,
-                left: selected.left,
-                scaleX: picture.reso.width / img.width,
-                scaleY: picture.reso.height / img.height,
-                lockScalingX: true,
-                lockScalingY: true,
-                lockSkewingX: true,
-                lockSkewingY: true,
-                lockRotation: true,
-                lockMovementX: true,
-                lockMovementY: true,
+        Imgcompressor(file)
+            .then((url) => {
+                FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
+                    img.set({
+                        top: selected.top,
+                        left: selected.left,
+                        scaleX: picture.reso.width / img.width,
+                        scaleY: picture.reso.height / img.height,
+                        lockScalingX: true,
+                        lockScalingY: true,
+                        lockSkewingX: true,
+                        lockSkewingY: true,
+                        lockRotation: true,
+                        lockMovementX: true,
+                        lockMovementY: true,
+                    })
+                    if (picture.location.rotate) {
+                        img.rotate(picture.location.rotate);
+                    }
+                    Canvase.add(img); Canvase.renderAll();
+                })
             })
-            if (picture.location.rotate) {
-                img.rotate(picture.location.rotate);
-            }
-            Canvase.add(img); Canvase.renderAll();
-        })
     }
     const handleCropClick = () => {
         const activeObject = Canvase.getActiveObject();
         setSelectedImage(activeObject);
         setShowCropper(true);
     };
-
     const handleCroppedData = (value) => {
-        setShowCropper(false);
-        const obje = Canvase.getActiveObject();
-        console.log(obje);
-        if (obje) {
-            Canvase.remove(obje);
-        }
-        FabricImage.fromURL(value).then((img) => {
-            img.set({
-                top: pic.location.top,
-                left: pic.location.left,
-                scaleX: pic.reso.width / img.width,
-                scaleY: pic.reso.height / img.height,
-                lockScalingX: true,
-                lockScalingY: true,
-                lockSkewingX: true,
-                lockSkewingY: true,
-                lockRotation: true,
-                lockMovementX: true,
-                lockMovementY: true,
-            })
-            img.rotate(obje.angle);
-            Canvase.add(img); Canvase.renderAll();
-        })
-
-    };
-        frame.PictureLocation.map((picture) => {
-                    if (selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top))) {
-                        setPicture(picture)
-                    }
+        if (value == 3456) {
+            closeCropper();
+        } else {
+            console.log(555555);
+            closeCropper();
+            const obje = Canvase.getActiveObject();
+            if (obje) {
+                Canvase.remove(obje);
+            }
+            FabricImage.fromURL(value).then((img) => {
+                img.set({
+                    top: pic.location.top,
+                    left: pic.location.left,
+                    scaleX: pic.reso.width / img.width,
+                    scaleY: pic.reso.height / img.height,
+                    lockScalingX: true,
+                    lockScalingY: true,
+                    lockSkewingX: true,
+                    lockSkewingY: true,
+                    lockRotation: true,
+                    lockMovementX: true,
+                    lockMovementY: true,
                 })
+                img.rotate(obje.angle);
+                Canvase.add(img);
+                Canvase.renderAll();
+            })
+        }
+    };
+    function closeCropper() {
+        setShowCropper(false);
+    }
     return (
         <div style={{ marginLeft: "100px", marginRight: "100px" }}>
             <div>
@@ -186,11 +191,9 @@ const Framelaout = () => {
                     selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
                         <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
                             <div className="up">
-                                <button className="card1" id="myBtn" onClick={handleCropClick}>
+                                <button className="card1" id="myBtn" onClick={() => { handleCropClick(); setPicture(picture) }}>
                                     <i className="bi bi-crop"></i> Crop
-
                                 </button>
-
                                 {showCropper && (
                                     <ImageCropper
                                         image={selectedImage}
