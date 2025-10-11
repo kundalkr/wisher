@@ -12,11 +12,13 @@ import happybirthday7 from "url:../../assets/img/birthdayframe/happy-birthday-7.
 import happybirthday8 from "url:../../assets/img/birthdayframe/happy-birthday-8.jpg";
 import happybirthday9 from "url:../../assets/img/birthdayframe/happy-birthday-9.jpg";
 import happybirthday10 from "url:../../assets/img/birthdayframe/happy-birthday-10.jpg";
+import testas from "url:../../assets/img/test/hikeimages.jpg";
 // import { left } from "@popperjs/core";
 
 const birthdayimg = [
     {
         pictureLink: birthdayFrame1,
+        testimages: testas,
         id: 1,
         category: "normal",
         Reso: {
@@ -400,10 +402,10 @@ const birthdayimg = [
                 id: 3,
                 location: {
                     left: 432,
-                    top: 598, rotate: 9,     input:{
-              left : 449,
-              top : 583
-             }
+                    top: 598, rotate: 9, input: {
+                        left: 449,
+                        top: 583
+                    }
                 },
                 reso: {
                     width: 203,
@@ -449,10 +451,10 @@ const birthdayimg = [
                 id: 1,
                 location: {
                     left: 295,
-                    top: 148, rotate: 9,  input:{
-              left : 322,
-              top : 124
-             }
+                    top: 148, rotate: 9, input: {
+                        left: 322,
+                        top: 124
+                    }
                 },
                 reso: {
                     width: 330,
@@ -463,10 +465,10 @@ const birthdayimg = [
                 id: 2,
                 location: {
                     left: 100,
-                    top: 600, rotate: -11, input:{
-              left : 69,
-              top : 636
-             }
+                    top: 600, rotate: -11, input: {
+                        left: 69,
+                        top: 636
+                    }
                 },
                 reso: {
                     width: 345,

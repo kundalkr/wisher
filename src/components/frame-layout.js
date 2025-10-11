@@ -74,7 +74,8 @@ const Framelaout = () => {
             })
             .catch((err) => console.error("Compression failed:", err));
         e.target.style.display = "none";
-    };
+    }
+
     const handleDownload = () => {
         if (!Canvase) return;
         const dataURL = Canvase.toDataURL({
@@ -97,7 +98,7 @@ const Framelaout = () => {
     function changePicture() {
         fileInputRef.current.click();
     }
-    
+
     function handlenewfile(e, { selected }, { picture }) {
         deleteActiveObject();
         const file = e.target.files[0];
@@ -105,7 +106,7 @@ const Framelaout = () => {
             .then((url) => {
                 FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
                     img.set({
-                        top: selected.top,
+                        top: picture.top,
                         left: selected.left,
                         scaleX: picture.reso.width / img.width,
                         scaleY: picture.reso.height / img.height,
