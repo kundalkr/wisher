@@ -2,10 +2,11 @@ import { Canvas, FabricImage } from "fabric";
 import React, { useEffect, useRef, useState } from "react";
 import birthdayimg from "./birthday/Birthdayconstants";
 import { useParams } from "react-router-dom";
-import "../css/components.css"
+import "../css/components.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import ImageCropper from "./utils-component/imgCropper";
-import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+// import ImageCropper from "./utils-component/imgCropper";
+import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
+// import Imgcompressor from "./utils-component/imgCompressor.js";
 
 const Framelaout = () => {
     const params = useParams();
@@ -14,51 +15,42 @@ const Framelaout = () => {
     const fileInputRef = useRef(null);
     const [Canvase, setCanvase] = useState(null);
     const [selected, setSelected] = useState(null);
-    const [pic, setpic] = useState(null);
+    const [pic, setPicture] = useState(null);
+    const [showCropper, setShowCropper] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const frame = birthdayimg.find(frame => frame.id === parseInt(id));
 
     useEffect(() => {
-        birthdayimg.find((frame) => {
-            if (frame.id == parseInt(id)) {
-                const imager = new Image(); imager.src = frame.pictureLink;
-                imager.onload = () => {
-                    const Maincanvas = new Canvas(canvasRef.current, {
-                        width: imager.width,
-                        height: imager.height,
-                        originX: 'left',
-                        originY: 'top',
-                        backgroundImage: new FabricImage(imager),
-                    });
-                    
-                    Maincanvas.on("selection:created", (e) => {
-                        setSelected(e.selected[0]);
-                    });
-
-                    Maincanvas.on("selection:cleared", () => {
-                        setSelected(null);
-                    });
-
-                    Maincanvas.renderAll();
-                    setCanvase(Maincanvas);
-                    Maincanvas.toDataURL('image/png');
-                    const activeObj = Maincanvas.getActiveObject();
-                    if (activeObj) {
-                        console.log(activeObj);
-                        console.log("isoajdooajj  eie qieqw");
-                    }
-                }
-                return () => Maincanvas.dispose();
-            }
-        })
+        const imager = new Image(); imager.src = frame.pictureLink;
+        imager.onload = () => {
+            const Maincanvas = new Canvas(canvasRef.current, {
+                width: imager.width,
+                height: imager.height,
+                originX: 'left',
+                originY: 'top',
+                backgroundImage: new FabricImage(imager),
+                selection: false, allowTouchScrolling: true
+            });
+            Maincanvas.on("selection:created", (e) => {
+                setSelected(e.selected[0]);
+            });
+            Maincanvas.on("selection:cleared", () => {
+                setSelected(null);
+            });
+            Maincanvas.renderAll();
+            setCanvase(Maincanvas);
+            Maincanvas.toDataURL('image/png');
+            return () => Maincanvas.dispose();
+        }
     }, [id]);
 
     const handleFileChange = (e, pictureId) => {
         const file = e.target.files[0];
-        birthdayimg.find((frame) => {
-            if (frame.id === parseInt(id)) {
+        Imgcompressor(file)
+            .then((url) => {
                 frame.PictureLocation.find((loca) => {
                     if (loca.id === pictureId) {
-                        FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
-                            // img.onSelect((e.)=>{});
+                        FabricImage.fromURL(url).then((img) => {
                             img.set({
                                 top: loca.location.top,
                                 left: loca.location.left,
@@ -79,10 +71,9 @@ const Framelaout = () => {
                         })
                     }
                 })
-            }
-        })
+            })
+            .catch((err) => console.error("Compression failed:", err));
         e.target.style.display = "none";
-        // console.log(e);
     };
     const handleDownload = () => {
         if (!Canvase) return;
@@ -111,8 +102,8 @@ const Framelaout = () => {
         const file = e.target.files[0];
         FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
             img.set({
-                top: selected.top,
-                left: selected.left,
+                top: Math.trunc(selected.top),
+                left: Math.trunc(selected.left),
                 scaleX: picture.reso.width / img.width,
                 scaleY: picture.reso.height / img.height,
                 lockScalingX: true,
@@ -129,43 +120,50 @@ const Framelaout = () => {
             Canvase.add(img); Canvase.renderAll();
         })
     }
-    function modalOn({picture}) {
-        document.getElementById("myModal").style.display = "block";
-      setpic(picture);
-    }
-    function modalClose() {
-        document.getElementById("myModal").style.display = "none";
-    }
-    const handleCroppedData = (value) => {
-        const obje = Canvase.getActiveObject();
-        console.log(obje);
-        if (obje) {
-            Canvase.remove(obje);
-        }
-        FabricImage.fromURL(value).then((img) => {
-            img.set({
-                top: pic.location.top,
-                left: pic.location.left,
-                scaleX: pic.reso.width / img.width,
-                scaleY: pic.reso.height / img.height,
-                lockScalingX: true,
-                lockScalingY: true,
-                lockSkewingX: true,
-                lockSkewingY: true,
-                lockRotation: true,
-                lockMovementX: true,
-                lockMovementY: true,
-            })
-            img.rotate(obje.angle);
-            Canvase.add(img); Canvase.renderAll();
-        })
+    const handleCropClick = () => {
+        const activeObject = Canvase.getActiveObject();
+        setSelectedImage(activeObject);
+        setShowCropper(true);
     };
+    const handleCroppedData = (value) => {
+        if (value == 3456) {
+            closeCropper();
+        } else {
+            console.log(555555);
+            closeCropper();
+            const obje = Canvase.getActiveObject();
+            if (obje) {
+                Canvase.remove(obje);
+            }
+            FabricImage.fromURL(value).then((img) => {
+                img.set({
+                    top: pic.location.top,
+                    left: pic.location.left,
+                    scaleX: pic.reso.width / img.width,
+                    scaleY: pic.reso.height / img.height,
+                    lockScalingX: true,
+                    lockScalingY: true,
+                    lockSkewingX: true,
+                    lockSkewingY: true,
+                    lockRotation: true,
+                    lockMovementX: true,
+                    lockMovementY: true,
+                })
+                img.rotate(obje.angle);
+                Canvase.add(img);
+                Canvase.renderAll();
+            })
+        }
+    };
+    function closeCropper() {
+        setShowCropper(false);
+    }
     return (
         <div style={{ marginLeft: "100px", marginRight: "100px" }}>
             <div>
                 <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
                 {
-                    birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+                    frame.PictureLocation.map((picture) => (
                         (<input
                             type="file"
                             key={picture.id}
@@ -185,22 +183,19 @@ const Framelaout = () => {
                 <span className="btn-txt">Download</span>
             </button>
             {selected && (
-                birthdayimg.find((frame) => frame.id === parseInt(id))?.PictureLocation.map((picture) => (
+                frame.PictureLocation.map((picture) => (
                     selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
                         <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
                             <div className="up">
-                                {/* modal */}
-                                <div id="myModal" className="modal">
-                                    <div className="modal-content">
-                                        <span className="close" onClick={modalClose}>&times;</span>
-                                        <ImageCropper image={Canvase.getActiveObject()} sendData={handleCroppedData} />
-                                    </div>
-                                </div>
-                                {/* modal */}
-                                <button className="card1" id="myBtn" onClick={() => modalOn({picture})}>
+                                <button className="card1" id="myBtn" onClick={() => { handleCropClick(); setPicture(picture) }}>
                                     <i className="bi bi-crop"></i> Crop
                                 </button>
-
+                                {showCropper && (
+                                    <ImageCropper
+                                        image={selectedImage}
+                                        sendData={handleCroppedData}
+                                    />
+                                )}
                                 <button className="card2 btn btn-success" onClick={changePicture}>
                                     <i className="bi bi-cloud-upload"></i> Change
                                 </button>
