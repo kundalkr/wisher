@@ -104,10 +104,10 @@ const Framelaout = () => {
         const file = e.target.files[0];
         Imgcompressor(file)
             .then((url) => {
-                FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
+                FabricImage.fromURL(url).then((img) => {
                     img.set({
-                        top: picture.top,
-                        left: selected.left,
+                        top: picture.location.top,
+                        left: picture.location.left,
                         scaleX: picture.reso.width / img.width,
                         scaleY: picture.reso.height / img.height,
                         lockScalingX: true,
