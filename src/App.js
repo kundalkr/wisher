@@ -10,8 +10,14 @@ import ResponsiveCanvas from "../src/components/test"
 
 const Applayout = () => {
   return (<>
+<<<<<<< HEAD
   {/* <ResponsiveCanvas/> */}
     <Birthdayframe />
+=======
+      <Birthdayframe />
+  {/* <ResponsiveCanvas/> */}
+
+>>>>>>> master
   </>)
 };
 

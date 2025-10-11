@@ -5,10 +5,9 @@ const birthdayimgs = birthdayimg[0];
 const BASE_WIDTH = birthdayimgs.Reso.width;
 const BASE_HEIGHT = birthdayimgs.Reso.height;
 
-function ResponsiveCanvas() {
+const ResponsiveCanvas = () => {
     const canvasRef = useRef(null);
     const [canva, setCanvas] = useState(null);
-    
     useEffect(() => {
         const img = new Image(); img.src = birthdayimgs.pictureLink;
         const c = new Canvas(canvasRef.current, {
@@ -17,8 +16,10 @@ function ResponsiveCanvas() {
             originX: 'left',
             originY: 'top',
             backgroundImage: new FabricImage(img),
-            preserveObjectStacking: true
+            preserveObjectStacking: true,
         });
+        preserveObjectStacking: true
+
         c.renderAll();
         FabricImage.fromURL(birthdayimgs.testimages, (img) => {
             img.set({

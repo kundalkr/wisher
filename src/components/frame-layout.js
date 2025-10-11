@@ -1,12 +1,12 @@
 import { Canvas, FabricImage } from "fabric";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import birthdayimg from "./birthday/Birthdayconstants";
 import { useParams } from "react-router-dom";
 import "../css/components.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-// import ImageCropper from "./utils-component/imgCropper";
+import ImageCropper from "./utils-component/imgCropper";
 import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
-// import Imgcompressor from "./utils-component/imgCompressor.js";
+import Imgcompressor from "./utils-component/imgCompressor.js";
 
 const Framelaout = () => {
     const params = useParams();
@@ -74,7 +74,8 @@ const Framelaout = () => {
             })
             .catch((err) => console.error("Compression failed:", err));
         e.target.style.display = "none";
-    };
+    }
+
     const handleDownload = () => {
         if (!Canvase) return;
         const dataURL = Canvase.toDataURL({
@@ -97,28 +98,32 @@ const Framelaout = () => {
     function changePicture() {
         fileInputRef.current.click();
     }
+
     function handlenewfile(e, { selected }, { picture }) {
         deleteActiveObject();
         const file = e.target.files[0];
-        FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
-            img.set({
-                top: Math.trunc(selected.top),
-                left: Math.trunc(selected.left),
-                scaleX: picture.reso.width / img.width,
-                scaleY: picture.reso.height / img.height,
-                lockScalingX: true,
-                lockScalingY: true,
-                lockSkewingX: true,
-                lockSkewingY: true,
-                lockRotation: true,
-                lockMovementX: true,
-                lockMovementY: true,
+        Imgcompressor(file)
+            .then((url) => {
+                FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
+                    img.set({
+                        top: picture.top,
+                        left: selected.left,
+                        scaleX: picture.reso.width / img.width,
+                        scaleY: picture.reso.height / img.height,
+                        lockScalingX: true,
+                        lockScalingY: true,
+                        lockSkewingX: true,
+                        lockSkewingY: true,
+                        lockRotation: true,
+                        lockMovementX: true,
+                        lockMovementY: true,
+                    })
+                    if (picture.location.rotate) {
+                        img.rotate(picture.location.rotate);
+                    }
+                    Canvase.add(img); Canvase.renderAll();
+                })
             })
-            if (picture.location.rotate) {
-                img.rotate(picture.location.rotate);
-            }
-            Canvase.add(img); Canvase.renderAll();
-        })
     }
     const handleCropClick = () => {
         const activeObject = Canvase.getActiveObject();
