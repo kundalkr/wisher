@@ -106,8 +106,8 @@ const Framelaout = () => {
             .then((url) => {
                 FabricImage.fromURL(URL.createObjectURL(file)).then((img) => {
                     img.set({
-                        top: picture.top,
-                        left: selected.left,
+                        top: picture.location.top,
+                        left: picture.location.left,
                         scaleX: picture.reso.width / img.width,
                         scaleY: picture.reso.height / img.height,
                         lockScalingX: true,
