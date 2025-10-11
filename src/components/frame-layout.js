@@ -1,5 +1,5 @@
 import { Canvas, FabricImage } from "fabric";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import birthdayimg from "./birthday/Birthdayconstants";
 import { useParams } from "react-router-dom";
 import "../css/components.css";
