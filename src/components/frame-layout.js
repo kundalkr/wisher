@@ -155,10 +155,10 @@ const Framelaout = () => {
             }
             FabricImage.fromURL(value).then((img) => {
                 img.set({
-                    top: pic.location.top,
-                    left: pic.location.left,
-                    scaleX: pic.reso.width / img.width,
-                    scaleY: pic.reso.height / img.height,
+                   left: (canvasWidth < W0) ? (Math.trunc(pic.location.left * (canvasWidth / W0))) : W0,
+                        top: (canvasHeight < H0) ? Math.trunc(pic.location.top * (canvasHeight / H0)) : H0,
+                        scaleX: (canvasWidth < W0) ? Math.trunc(pic.reso.width * (canvasWidth / W0)) / img.width : pic.reso.width / img.width,
+                        scaleY: (canvasWidth < W0) ? Math.trunc(pic.reso.height * (canvasHeight / H0)) / img.height : (pic.reso.height / img.height),
                     lockScalingX: true,
                     lockScalingY: true,
                     lockSkewingX: true,
