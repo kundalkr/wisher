@@ -9,7 +9,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Applayout = () => {
   return (<>
-      <Birthdayframe />
+  {/* <ResponsiveCanvas/> */}
+    <Birthdayframe />
   </>)
 };
 

@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cache": "rm -rf .parcel-cache dist"
+    "cache": "rm -rf .parcel-cache dist",
+    "allcache": "parcel index.html --no-cache",
+    "build": "parcel build index.html"
   },
   "author": "",
   "license": "ISC",

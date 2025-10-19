@@ -1,3 +1,4 @@
+// import birthdayFrame1 from "url:../../assets/img/birthdayframe/birthdayframe1.jpg";
 import birthdayFrame1 from "url:../../assets/img/birthdayframe/birthdayframe1.jpg";
 import aesthetic from "url:../../assets/img/birthdayframe/aesthetic.jpg";
 import asthetic from "url:../../assets/img/birthdayframe/asthetic.jpg";
