@@ -1,6 +1,6 @@
 import Compressor from 'compressorjs';
 
-const Imgcompressor = (fileurl, height, width) => {
+const Imgcompressor = (fileurl,height, width) => {
   return new Promise((resolve, reject) => {
     if (!fileurl) {
       reject(new Error("No file provided"));
@@ -13,8 +13,8 @@ const Imgcompressor = (fileurl, height, width) => {
         new Compressor(imageFile, {
           quality: 0.5,
  
-          maxHeight: height, maxWidth: width,
-          // minHeight: height, minWidth: width,
+         minWidth: width, maxWidth: width,
+          minHeight: height,  maxHeight: height,
           success(result) {
             const imgUrl = URL.createObjectURL(result);
             resolve(imgUrl);

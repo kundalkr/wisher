@@ -20,6 +20,7 @@ const Framelaout = () => {
     const [showCropper, setShowCropper] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [canvasHeight, setcanvasHeight] = useState(null);
+    const [canvasWidth, setcanvasWidth] = useState(null);
     const frame = birthdayimg.find(frame => frame.id === parseInt(id));
 
     const W0 = frame.Reso.width;
@@ -28,7 +29,7 @@ const Framelaout = () => {
     useEffect(() => {
         const imager = new Image(); imager.src = frame.pictureLink;
         imager.onload = () => {
-            Imgcompressor(imager.src, window.outerHeight, window.outerWidth)
+            Imgcompressor(imager.src, Math.min(window.outerHeight, H0), Math.min(window.outerWidth, W0))
                 .then((url) => {
                     const imgElement = new Image();
                     imgElement.src = url;
@@ -49,6 +50,7 @@ const Framelaout = () => {
                         });
                         Maincanvas.requestRenderAll()
                         setcanvasHeight(Maincanvas.getHeight());
+                        setcanvasWidth(Maincanvas.getWidth());
                         setCanvase(Maincanvas);
                         return () => Maincanvas.dispose();
                     }
@@ -64,10 +66,10 @@ const Framelaout = () => {
                     if (loca.id === pictureId) {
                         FabricImage.fromURL(url).then((img) => {
                             img.set({
-                                left: (window.outerWidth < W0) ? (Math.trunc(loca.location.left * (window.outerWidth / W0))) : W0,
-                                top: (window.outerHeight < H0) ? Math.trunc(loca.location.top * (canvasHeight / H0)) : H0,
-                                scaleX: (window.outerWidth < W0) ? Math.trunc(loca.reso.width * (window.outerWidth / W0)) / img.width :(0),
-                                scaleY: Math.trunc(loca.reso.height * (canvasHeight / H0)) / img.height,
+                                left: (canvasWidth < W0) ? (Math.trunc(loca.location.left * (canvasWidth / W0))) : W0,
+                                top: (canvasHeight < H0) ? Math.trunc(loca.location.top * (canvasHeight / H0)) : H0,
+                                scaleX: (canvasWidth < W0) ? Math.trunc(loca.reso.width * (canvasWidth / W0)) / img.width : loca.reso.width / img.width,
+                                scaleY: (canvasWidth < W0) ? Math.trunc(loca.reso.height * (canvasHeight / H0)) / img.height : (loca.reso.height / img.height),
                                 lockScalingX: true,
                                 lockScalingY: true,
                                 lockSkewingX: true,
@@ -117,10 +119,10 @@ const Framelaout = () => {
             .then((url) => {
                 FabricImage.fromURL(url).then((img) => {
                     img.set({
-                        top: picture.location.top,
-                        left: picture.location.left,
-                        scaleX: picture.reso.width / img.width,
-                        scaleY: picture.reso.height / img.height,
+                        left: (canvasWidth < W0) ? (Math.trunc(picture.location.left * (canvasWidth / W0))) : W0,
+                        top: (canvasHeight < H0) ? Math.trunc(picture.location.top * (canvasHeight / H0)) : H0,
+                        scaleX: (canvasWidth < W0) ? Math.trunc(picture.reso.width * (canvasWidth / W0)) / img.width : picture.reso.width / img.width,
+                        scaleY: (canvasWidth < W0) ? Math.trunc(picture.reso.height * (canvasHeight / H0)) / img.height : (picture.reso.height / img.height),
                         lockScalingX: true,
                         lockScalingY: true,
                         lockSkewingX: true,
@@ -186,25 +188,32 @@ const Framelaout = () => {
                                 key={picture.id}
                                 id={`${picture.id}`}
                                 style={{
-                                    width: `${Math.trunc(picture.reso.width * (window.outerWidth / W0))}px`, height: `${Math.trunc(picture.reso.height * (canvasHeight / H0))}px`,
+                                    width: `${(canvasWidth < W0) ? (Math.trunc(picture.reso.width * (canvasWidth / W0))) : picture.reso.width}px`,
+                                    height: `${(canvasHeight < H0) ? (Math.trunc(picture.reso.height * (canvasHeight / H0))) : picture.reso.height}px`,
                                     position: "absolute",
-                                    left: `${Math.trunc(picture.location.left * (window.outerWidth / W0))}px`,
-                                    top: `${Math.trunc(picture.location.top * (canvasHeight / H0))}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
+                                    left: `${(canvasWidth < W0) ? (Math.trunc(picture.location.left * (canvasWidth / W0))) : picture.location.left}px`,
+                                    top: `${(canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
                                 }}
                                 onChange={(e) => handleFileChange(e, picture.id)}
                             />
                         )
                     ))
                 }
+                {console.log(canvasWidth+ " "+ W0)}
             </div>
-            {console.log((window.outerHeight / H0))}
+            {/* {console.log((window.outerHeight / H0))} */}
             <button onClick={handleDownload} className="button type1" >
                 <span className="btn-txt">Download</span>
             </button>
             {selected && (
                 frame.PictureLocation.map((picture) => (
-                    selected.top === picture.location.top || (Math.trunc(selected.top) === (picture.location.rotate ? picture.location.input.top : picture.location.top)) ? (
-                        <div className="main" key={picture.id} style={{ position: "absolute", top: `${picture.location.top}px`, left: `${picture.location.left}px`, zIndex: 1111111 }}>
+                    selected.top === ((canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top) ? (
+                        <div className="main" key={picture.id} style={{
+                            position: "absolute",
+                            top: `${(canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top}px`,
+                            left: `${(window.outerWidth < W0) ? (Math.trunc(picture.location.left * (window.outerWidth / W0))) : picture.location.left}px`,
+                            zIndex: 1111111
+                        }}>
                             <div className="up">
                                 <button className="card1" id="myBtn" onClick={() => { handleCropClick(); setPicture(picture) }}>
                                     <i className="bi bi-crop"></i> Crop
@@ -223,6 +232,7 @@ const Framelaout = () => {
                                     style={{ display: "none" }}
                                     onChange={(e) => handlenewfile(e, { selected }, { picture })} />
                             </div>
+                            {console.log(Math.trunc(picture.location.top * (canvasHeight / H0)) + " " + picture.location.top)}
                             <div className="down">
                                 <button className="card3 btn btn-success" onClick={deleteActiveObject}>
                                     <i className="bi bi-trash3"></i>Delete
@@ -232,10 +242,11 @@ const Framelaout = () => {
                                 </button>
                             </div>
                         </div>
+
                     ) : (0)
                 )
                 ))}
-            {console.log(selected)}
+            {/* {console.log(selected)} */}
         </div>
     );
 };
