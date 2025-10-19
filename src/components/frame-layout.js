@@ -207,7 +207,7 @@ const Framelaout = () => {
             </button>
             {selected && (
                 frame.PictureLocation.map((picture) => (
-                    selected.top === ((canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top) ? (
+                    (selected.top === ((canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top))||(selected.angle)===(picture.location.rotate) ? (
                         <div className="main" key={picture.id} style={{
                             position: "absolute",
                             top: `${(canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top}px`,
