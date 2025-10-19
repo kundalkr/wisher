@@ -7,6 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import ImageCropper from "./utils-component/imgCropper";
 import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import Imgcompressor from "./utils-component/imgCompressor.js";
+import { Imgcompressorforall } from "./utils-component/imgCompressor.js";
 
 const Framelaout = () => {
     const params = useParams();
@@ -18,44 +19,55 @@ const Framelaout = () => {
     const [pic, setPicture] = useState(null);
     const [showCropper, setShowCropper] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [canvasHeight, setcanvasHeight] = useState(null);
     const frame = birthdayimg.find(frame => frame.id === parseInt(id));
+
+    const W0 = frame.Reso.width;
+    const H0 = frame.Reso.height;
 
     useEffect(() => {
         const imager = new Image(); imager.src = frame.pictureLink;
         imager.onload = () => {
-            const Maincanvas = new Canvas(canvasRef.current, {
-                width: imager.width,
-                height: imager.height,
-                originX: 'left',
-                originY: 'top',
-                backgroundImage: new FabricImage(imager),
-                selection: false, allowTouchScrolling: true
-            });
-            Maincanvas.on("selection:created", (e) => {
-                setSelected(e.selected[0]);
-            });
-            Maincanvas.on("selection:cleared", () => {
-                setSelected(null);
-            });
-            Maincanvas.renderAll();
-            setCanvase(Maincanvas);
-            Maincanvas.toDataURL('image/png');
-            return () => Maincanvas.dispose();
+            Imgcompressor(imager.src, window.outerHeight, window.outerWidth)
+                .then((url) => {
+                    const imgElement = new Image();
+                    imgElement.src = url;
+                    imgElement.onload = () => {
+                        const Maincanvas = new Canvas(canvasRef.current, {
+                            width: (window.outerWidth < imgElement.width) ? window.outerWidth : imgElement.width,
+                            height: (window.outerHeight < imgElement.height) ? window.outerHeight : imgElement.height,
+                            originX: 'left',
+                            originY: 'top',
+                            backgroundImage: new FabricImage(imgElement),
+                            selection: false, allowTouchScrolling: true, imageSmoothingEnabled: true
+                        });
+                        Maincanvas.on("selection:created", (e) => {
+                            setSelected(e.selected[0]);
+                        });
+                        Maincanvas.on("selection:cleared", () => {
+                            setSelected(null);
+                        });
+                        Maincanvas.requestRenderAll()
+                        setcanvasHeight(Maincanvas.getHeight());
+                        setCanvase(Maincanvas);
+                        return () => Maincanvas.dispose();
+                    }
+                })
         }
     }, [id]);
 
     const handleFileChange = (e, pictureId) => {
         const file = e.target.files[0];
-        Imgcompressor(file)
+        Imgcompressorforall(file)
             .then((url) => {
                 frame.PictureLocation.find((loca) => {
                     if (loca.id === pictureId) {
                         FabricImage.fromURL(url).then((img) => {
                             img.set({
-                                top: loca.location.top,
-                                left: loca.location.left,
-                                scaleX: loca.reso.width / img.width,
-                                scaleY: loca.reso.height / img.height,
+                                left: (window.outerWidth < W0) ? (Math.trunc(loca.location.left * (window.outerWidth / W0))) : W0,
+                                top: (window.outerHeight < H0) ? Math.trunc(loca.location.top * (canvasHeight / H0)) : H0,
+                                scaleX: (window.outerWidth < W0) ? Math.trunc(loca.reso.width * (window.outerWidth / W0)) / img.width :(0),
+                                scaleY: Math.trunc(loca.reso.height * (canvasHeight / H0)) / img.height,
                                 lockScalingX: true,
                                 lockScalingY: true,
                                 lockSkewingX: true,
@@ -98,11 +110,10 @@ const Framelaout = () => {
     function changePicture() {
         fileInputRef.current.click();
     }
-
     function handlenewfile(e, { selected }, { picture }) {
         deleteActiveObject();
         const file = e.target.files[0];
-        Imgcompressor(file)
+        Imgcompressorforall(file)
             .then((url) => {
                 FabricImage.fromURL(url).then((img) => {
                     img.set({
@@ -164,26 +175,29 @@ const Framelaout = () => {
         setShowCropper(false);
     }
     return (
-        <div style={{ marginLeft: "100px", marginRight: "100px" }}>
+        <div>
             <div>
                 <canvas ref={canvasRef} style={{ border: "1px solid blue" }} />
                 {
                     frame.PictureLocation.map((picture) => (
-                        (<input
-                            type="file"
-                            key={picture.id}
-                            id={`${picture.id}`}
-                            style={{
-                                width: `${picture.reso.width}px`, height: `${picture.reso.height}px`,
-                                marginLeft: "100px", position: "absolute",
-                                left: `${picture.location.left}px`,
-                                top: `${picture.location.top}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
-                            }}
-                            onChange={(e) => handleFileChange(e, picture.id)}
-                        />)
+                        (
+                            <input
+                                type="file"
+                                key={picture.id}
+                                id={`${picture.id}`}
+                                style={{
+                                    width: `${Math.trunc(picture.reso.width * (window.outerWidth / W0))}px`, height: `${Math.trunc(picture.reso.height * (canvasHeight / H0))}px`,
+                                    position: "absolute",
+                                    left: `${Math.trunc(picture.location.left * (window.outerWidth / W0))}px`,
+                                    top: `${Math.trunc(picture.location.top * (canvasHeight / H0))}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
+                                }}
+                                onChange={(e) => handleFileChange(e, picture.id)}
+                            />
+                        )
                     ))
                 }
             </div>
+            {console.log((window.outerHeight / H0))}
             <button onClick={handleDownload} className="button type1" >
                 <span className="btn-txt">Download</span>
             </button>
@@ -222,7 +236,7 @@ const Framelaout = () => {
                 )
                 ))}
             {console.log(selected)}
-        </div >
+        </div>
     );
 };
 export default Framelaout
