@@ -1,24 +1,27 @@
-// import birthdayFrame1 from "url:../../assets/img/birthdayframe/birthdayframe1.jpg";
-import birthdayFrame1 from "url:../../assets/img/birthdayframe/birthdayframe1.jpg";
-import aesthetic from "url:../../assets/img/birthdayframe/aesthetic.jpg";
-import asthetic from "url:../../assets/img/birthdayframe/asthetic.jpg";
-import happybirthday from "url:../../assets/img/birthdayframe/happy-birthday.jpg";
-import happybirthday4 from "url:../../assets/img/birthdayframe/happy-birthday-4.jpg";
 import happybirthday1 from "url:../../assets/img/birthdayframe/happy-birthday-1.jpg";
 import happybirthday2 from "url:../../assets/img/birthdayframe/happy-birthday-2.jpg";
 import happybirthday3 from "url:../../assets/img/birthdayframe/happy-birthday-3.jpg";
+import happybirthday4 from "url:../../assets/img/birthdayframe/happy-birthday-4.jpg";
 import happybirthday5 from "url:../../assets/img/birthdayframe/happy-birthday-5.jpg";
 import happybirthday6 from "url:../../assets/img/birthdayframe/happy-birthday-6.jpg";
 import happybirthday7 from "url:../../assets/img/birthdayframe/happy-birthday-7.jpg";
 import happybirthday8 from "url:../../assets/img/birthdayframe/happy-birthday-8.jpg";
 import happybirthday9 from "url:../../assets/img/birthdayframe/happy-birthday-9.jpg";
 import happybirthday10 from "url:../../assets/img/birthdayframe/happy-birthday-10.jpg";
+import happybirthday11 from "url:../../assets/img/birthdayframe/birthdayframe1.jpg";
+import happybirthday12 from "url:../../assets/img/birthdayframe/aesthetic.jpg";
+import happybirthday13 from "url:../../assets/img/birthdayframe/asthetic.jpg";
+import happybirthday14 from "url:../../assets/img/birthdayframe/happy-birthday.jpg";
+import happybirthday15 from "url:../../assets/img/birthdayframe/happy-birthday-15.jpg";
+import happybirthday16 from "url:../../assets/img/birthdayframe/happy-birthday-16.jpg";
+import happybirthday17 from "url:../../assets/img/birthdayframe/happy-birthday-17.jpg";
+
 import testas from "url:../../assets/img/test/hikeimages.jpg";
 // import { left } from "@popperjs/core";
 
 const birthdayimg = [
     {
-        pictureLink: birthdayFrame1,
+        pictureLink: happybirthday11,
         testimages: testas,
         id: 1,
         category: "normal",
@@ -63,10 +66,10 @@ const birthdayimg = [
                     height: 218
                 }
             }
-        ],
+        ]
     },
     {
-        pictureLink: aesthetic,
+        pictureLink: happybirthday12,
         id: 2,
         category: "normal",
         Reso: {
@@ -124,7 +127,7 @@ const birthdayimg = [
         ],
     },
     {
-        pictureLink: asthetic,
+        pictureLink: happybirthday13,
         id: 3,
         category: "normal",
         Reso: {
@@ -148,7 +151,7 @@ const birthdayimg = [
         ],
     },
     {
-        pictureLink: happybirthday,
+        pictureLink: happybirthday14,
         id: 4,
         category: "normal",
         Reso: {
@@ -524,6 +527,124 @@ const birthdayimg = [
             }
 
         ],
+    },
+    {
+        pictureLink: happybirthday15,
+        id: 15,
+        category: "normal",
+        Reso: {
+            width: 736,
+            height: 1104
+        },
+        PictureLocation: [
+            {
+                id: 1,
+                location: {
+                    left: 120,
+                    top: 125,
+                    rotate: -7,
+                    input: {
+                        left: 90,
+                        top: 3259
+                    }
+                },
+                reso: {
+                    width: 280,
+                    height: 280
+                }
+            },
+            {
+                id: 2,
+                location: {
+                    left: 375,
+                    top: 450,
+                    rotate: 7,
+                    input: {
+                        left: 90,
+                        top: 3259
+                    }
+                },
+                reso: {
+                    width: 280,
+                    height: 280
+                }
+            }, {
+                id: 3,
+                location: {
+                    left: 111,
+                    top: 745,
+                    rotate: -3,
+                    input: {
+                        left: 90,
+                        top: 3259
+                    }
+                },
+                reso: {
+                    width: 270,
+                    height: 265
+                }
+            }
+
+        ],
+    },
+    {
+        pictureLink: happybirthday16,
+        id: 16,
+        category: "normal",
+        Reso: {
+            width: 736,
+            height: 1308
+        },
+        PictureLocation: [
+            {
+                id: 1,
+                location: {
+                    left: 195,
+                    top: 300,
+
+                    input: {
+                        left: 90,
+                        top: 3259
+                    }
+                },
+                reso: {
+                    width: 348,
+                    height: 500
+                }
+            },
+
+
+        ],
+    },
+    {
+        pictureLink: happybirthday17,
+        id: 17,
+        category: "normal",
+        Reso: {
+            width: 736,
+            height: 1308
+        },
+        PictureLocation: [
+            {
+                id: 1,
+                location: {
+                    left: 165,
+                    top: 400,
+
+                    input: {
+                        left: 90,
+                        top: 3259
+                    }
+                },
+                reso: {
+                    width: 420,
+                    height: 550
+                }
+            },
+
+
+        ],
+
     },
 ];
 export default birthdayimg; 

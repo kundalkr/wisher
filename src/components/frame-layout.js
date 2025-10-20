@@ -192,7 +192,7 @@ const Framelaout = () => {
                                     height: `${(canvasHeight < H0) ? (Math.trunc(picture.reso.height * (canvasHeight / H0))) : picture.reso.height}px`,
                                     position: "absolute",
                                     left: `${(canvasWidth < W0) ? (Math.trunc(picture.location.left * (canvasWidth / W0))) : picture.location.left}px`,
-                                    top: `${(canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top}px`, color: "white", border: "10px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
+                                    top: `${(canvasHeight < H0) ? (Math.trunc(picture.location.top * (canvasHeight / H0))) : picture.location.top}px`, color: "white", border: "5px solid red", transform: `rotate(${picture.location.rotate ? picture.location.rotate : 0}deg)`
                                 }}
                                 onChange={(e) => handleFileChange(e, picture.id)}
                             />
