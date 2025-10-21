@@ -645,6 +645,6 @@ const birthdayimg = [
 
         ],
 
-    },
+    }
 ];
 export default birthdayimg; 
